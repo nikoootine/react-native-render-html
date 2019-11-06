@@ -102,48 +102,53 @@ export default class HTMLImage extends PureComponent {
         if (styleWidth) {
           const parsedWidth = this.parseDimension(styleWidth, screenWidth);
           const optimalHeight = (parsedWidth * originalHeight) / originalWidth;
-          return (
-            this.mounted &&
-            this.setState({
-              width: parsedWidth,
-              height: optimalHeight,
-              error: false,
-              indeterminate: false
-            })
-          );
+          if (this.mounted) {
+            return (
+              this.setState({
+                width: parsedWidth,
+                height: optimalHeight,
+                error: false,
+                indeterminate: false
+              })
+            );
+          }
         }
         if (styleHeight) {
           const parsedHeight = this.parseDimension(styleHeight, screenHeight);
           const optimalWidth = (parsedHeight * originalWidth) / originalHeight;
-          return (
-            this.mounted &&
-            this.setState({
-              width: optimalWidth,
-              height: parsedHeight,
-              error: false
-            })
-          );
+          if (this.mounted) {
+            return (
+              this.setState({
+                width: optimalWidth,
+                height: parsedHeight,
+                error: false
+              })
+            );
+          }
         }
         if (!imagesMaxWidth) {
-          return (
-            this.mounted &&
-            this.setState({
-              width: originalWidth,
-              height: originalHeight,
-              indeterminate: false
-            })
-          );
+          if (this.mounted) {
+            return (
+              this.setState({
+                width: originalWidth,
+                height: originalHeight,
+                indeterminate: false
+              })
+            );
+          }
         }
         const optimalWidth =
           imagesMaxWidth <= originalWidth ? imagesMaxWidth : originalWidth;
         const optimalHeight = (optimalWidth * originalHeight) / originalWidth;
-        this.mounted &&
+
+        if (this.mounted) {
           this.setState({
             width: optimalWidth,
             height: optimalHeight,
             error: false,
             indeterminate: false
           });
+        }
       },
       () => {
         this.mounted && this.setState({ error: true });
